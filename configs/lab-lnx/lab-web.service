@@ -1,0 +1,10 @@
+[Unit]
+Description=Lab fake internet web server
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 -m http.server 8080 --bind 198.51.100.100 --directory /srv/lab-web
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

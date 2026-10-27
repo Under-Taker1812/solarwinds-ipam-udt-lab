@@ -1,0 +1,11 @@
+[Unit]
+Description=Lab clients (macvlan namespaces)
+After=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/sbin/lab-clients.sh
+
+[Install]
+WantedBy=multi-user.target

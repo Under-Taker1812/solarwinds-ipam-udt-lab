@@ -1,0 +1,17 @@
+# /etc/netplan/60-lab.yaml on GW-BENCH (chmod 600)
+# ens33 -> VMnet10 (office VLAN 20 + simulated public range, same L2)
+# ens37 -> VMnet13 (fake Internet, host-only)
+# ens38 -> VMware NAT (real Internet for apt and Tailscale only)
+# The first address on ens33 (192.168.20.1) is the relay address (giaddr) that
+# selects the OFFICE-20 scope on DC01.
+network:
+  version: 2
+  ethernets:
+    ens33:
+      dhcp4: false
+      addresses: [192.168.20.1/24, 203.0.113.1/24]
+    ens37:
+      dhcp4: false
+      addresses: [198.51.100.1/24]
+    ens38:
+      dhcp4: true

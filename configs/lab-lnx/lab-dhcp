@@ -1,0 +1,11 @@
+#!/bin/bash
+# Usage: lab-dhcp <namespace> <interface> [release]
+# dhclient shares one PID file and one lease file by default, so releasing one
+# client could kill another's process. This gives every namespace its own files.
+ns=$1; ifc=$2
+args="-pf /run/dhclient-$ns.pid -lf /var/lib/dhcp/dhclient-$ns.leases"
+if [ "$3" = "release" ]; then
+  ip netns exec $ns dhclient -r $args $ifc
+else
+  ip netns exec $ns dhclient -v $args $ifc
+fi

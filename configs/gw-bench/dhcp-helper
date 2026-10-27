@@ -1,0 +1,6 @@
+# /etc/default/dhcp-helper on GW-BENCH
+# -s : forward client requests to the DHCP server on DC01 (through the Tailscale tunnel)
+# -i : listen only on the office-VLAN interface; without it dhcp-helper also listens on
+#      the NAT interface and relays the VM's own requests
+# Do not use -b (broadcast relay): DC01 is not on any broadcast segment of this host.
+DHCPHELPER_OPTS="-s 192.168.10.10 -i ens33"

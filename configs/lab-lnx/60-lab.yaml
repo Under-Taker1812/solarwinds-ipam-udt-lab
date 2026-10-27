@@ -1,0 +1,14 @@
+# /etc/netplan/60-lab.yaml on LAB-LNX (final state, chmod 600)
+# ens33 carries the clients (macvlan), so it must have no address of its own,
+# otherwise this VM would take the DHCP lease meant for c5.
+network:
+  version: 2
+  ethernets:
+    ens33:
+      dhcp4: false
+    ens37:
+      dhcp4: false
+      addresses: [198.51.100.100/24]
+      routes:
+        - to: default
+          via: 198.51.100.1

@@ -1,0 +1,13 @@
+# Obsidian's folder-notes plugin auto-creates <FolderName>.md inside any new folder
+# it sees live (this repo lives inside the Obsidian vault). These aren't repo content.
+# NOTE: any NEW folder added later needs its own line here (Obsidian names the file
+# after the folder, so no single glob pattern catches all of them safely).
+solarwinds-ipam-udt-lab.md
+docs/docs.md
+docs/screenshots/screenshots.md
+docs/troubleshooting/troubleshooting.md
+configs/configs.md
+configs/gw-bench/gw-bench.md
+configs/gw-srv/gw-srv.md
+configs/lab-lnx/lab-lnx.md
+.obsidian/

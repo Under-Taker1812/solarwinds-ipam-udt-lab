@@ -1,0 +1,49 @@
+! S1: Cisco Catalyst 1200, model C1200-48T-4G, software 4.1.3.36
+! Day-zero CLI after a button reset (default login cisco/cisco, the switch forces you to
+! create a new account: >= 8 characters, 3 of 4 character classes). Type one command per line.
+! The account line and its password hash are intentionally left out of this file.
+!
+configure terminal
+hostname S1
+vlan 20
+vlan 50
+interface vlan 20
+ip address 192.168.20.2 255.255.255.0
+exit
+ip route 0.0.0.0 0.0.0.0 192.168.20.1
+!
+! gi1 = cable d1 to the laptop: VLAN 20 untagged (native), VLAN 50 tagged
+interface gi1
+switchport mode trunk
+switchport trunk allowed vlan add 20,50
+switchport trunk native vlan 20
+exit
+! gi2 = cable d2 to the firewall: both VLANs tagged
+interface gi2
+switchport mode trunk
+switchport trunk allowed vlan add 20,50
+exit
+! gi3 = spare, same as gi1, used for the "move the cable to another port" test
+interface gi3
+switchport mode trunk
+switchport trunk allowed vlan add 20,50
+switchport trunk native vlan 20
+exit
+!
+snmp-server server
+snmp-server community lab-ro ro
+end
+!
+! Save to startup config (answer Y):
+copy running-config startup-config
+!
+! What `show running-config` looked like afterwards, after a power cycle:
+!   vlan database / vlan 20,50
+!   hostname S1
+!   snmp-server server
+!   snmp-server community lab-ro ro view Default
+!   interface vlan 20 / ip address 192.168.20.2 255.255.255.0
+!   interface GigabitEthernet1 / switchport mode trunk / switchport trunk native vlan 20
+!   interface GigabitEthernet2 / switchport mode trunk
+!   interface GigabitEthernet3 / switchport mode trunk / switchport trunk native vlan 20
+!   ip default-gateway 192.168.20.1

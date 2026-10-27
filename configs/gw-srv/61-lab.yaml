@@ -1,0 +1,13 @@
+# /etc/netplan/61-lab.yaml on GW-SRV (chmod 600)
+# Keeps traffic for the uplink VLAN's own subnet on the main routing table, even
+# when Tailscale runs with --accept-routes and another node advertises that subnet.
+# Replace <UPLINK_CIDR> with the subnet of the Internet-facing VLAN.
+# Do not edit 50-cloud-init.yaml: cloud-init regenerates it on every boot.
+network:
+  version: 2
+  ethernets:
+    eth1:
+      routing-policy:
+        - to: <UPLINK_CIDR>
+          table: 254
+          priority: 2500

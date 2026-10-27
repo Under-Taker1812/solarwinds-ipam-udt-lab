@@ -1,0 +1,43 @@
+# F1: Juniper SRX220H2, Junos 12.1X44-D35.5, built from factory defaults.
+# Enter with `configure`, run `delete` first (answer yes) to drop the factory config,
+# then paste or type the lines below and finish with `commit check` and `commit`.
+#
+# Not included: the root password. Junos will not commit without one:
+#   set system root-authentication plain-text-password      (asks twice)
+#
+set system host-name F1
+
+# One physical port, two tagged VLANs ("firewall on a stick")
+set interfaces ge-0/0/0 vlan-tagging
+set interfaces ge-0/0/0 unit 20 vlan-id 20
+set interfaces ge-0/0/0 unit 20 family inet address 203.0.113.10/24
+set interfaces ge-0/0/0 unit 50 vlan-id 50
+set interfaces ge-0/0/0 unit 50 family inet address 192.168.50.1/24
+set routing-options static route 0.0.0.0/0 next-hop 203.0.113.1
+
+# Zones: VLAN 20 side = untrust (answers ping and SNMP), VLAN 50 side = trust (answers ping)
+set security zones security-zone untrust interfaces ge-0/0/0.20 host-inbound-traffic system-services ping
+set security zones security-zone untrust interfaces ge-0/0/0.20 host-inbound-traffic system-services snmp
+set security zones security-zone trust interfaces ge-0/0/0.50 host-inbound-traffic system-services ping
+
+# trust -> untrust: allow everything (lab)
+set security policies from-zone trust to-zone untrust policy t2u match source-address any destination-address any application any
+set security policies from-zone trust to-zone untrust policy t2u then permit
+
+# Source NAT
+#   192.168.50.0/25   (c1, c2)  -> the egress interface address 203.0.113.10 (PAT)
+#   192.168.50.128/25 (c3, c4)  -> pool 203.0.113.11-.14
+# proxy-arp makes F1 answer ARP for the pool addresses, which exist on no interface
+set security nat source rule-set to-out from zone trust
+set security nat source rule-set to-out to zone untrust
+set security nat source rule-set to-out rule pat match source-address 192.168.50.0/25
+set security nat source rule-set to-out rule pat then source-nat interface
+set security nat source pool pool1 address 203.0.113.11/32 to 203.0.113.14/32
+set security nat source rule-set to-out rule pool match source-address 192.168.50.128/25
+set security nat source rule-set to-out rule pool then source-nat pool pool1
+set security nat proxy-arp interface ge-0/0/0.20 address 203.0.113.11/32 to 203.0.113.14/32
+
+# SNMP v2c, read-only
+set snmp community lab-ro authorization read-only
+
+# After commit: request system configuration rescue save
