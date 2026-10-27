@@ -81,7 +81,7 @@ The second image is the false-positive finding discussed in [test results](09-te
 
 ## Not yet captured
 
-The docs mark these spots with `[SCREENSHOT NN: ...]`. The lab is shut down, so they were not taken; each is a console view that is easy to reproduce if the lab is rebuilt.
+The docs mark these spots with `[SCREENSHOT NN: ...]`. The lab was taken down and will not be restarted, so they were never taken; each is a console view that is easy to reproduce if the lab is rebuilt.
 
 | # | Where | What it should show |
 |---|---|---|

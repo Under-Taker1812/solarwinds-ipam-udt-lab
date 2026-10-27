@@ -67,7 +67,7 @@ configs/    — device and VM configs: SRX220, Catalyst, netplan, dhcp-helper, c
 
 ## Status
 
-**Ended 2026-10-27 because the internship did, not because of a blocker.** Infrastructure and gate tests are complete; the core tests are about half done; the extended catalogue was written but never run. The trial license expires on 2026-11-20. Everything left undone is listed in [project status](docs/10-project-status.md), together with the order in which to do it.
+**Ended 2026-10-27 because the internship did, not because of a blocker.** Infrastructure and gate tests are complete; the core tests are about half done; the extended catalogue was written but never run. The trial license expires on 2026-11-20. Everything left undone is listed in [project status](docs/10-project-status.md), together with the order in which to do it. The lab itself was taken down the same day and will not be restarted, since the real devices were borrowed; the documentation is the record.
 
 This is a personal lab, not a production reference. Shortcuts taken on purpose are marked **⚠️ lab-only** in the relevant doc: an over-privileged service account, a disabled host firewall, SNMP v2c community strings.
 

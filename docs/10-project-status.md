@@ -30,7 +30,7 @@ timeline
 
 ## Open items
 
-None of these block reading the documentation; they are what a successor would pick up.
+The lab was taken down on 2026-10-27 and will not be restarted: the real devices were borrowed and are no longer available. So none of these can be done on the original setup. They are kept as the list a rebuild would start from.
 
 | Item | Detail |
 |---|---|
@@ -47,6 +47,8 @@ None of these block reading the documentation; they are what a successor would p
 | Trial expiry | 2026-11-20; after that polling stops |
 
 ## If you want to rebuild this
+
+The order below is what worked. Everything here is from the written record: the original lab no longer exists.
 
 Order that worked, with the time each part took the first time:
 
