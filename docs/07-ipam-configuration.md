@@ -83,6 +83,8 @@ DC01 has 8 zones in reality; IPAM imported 5 (which three were skipped was not d
 2. Open the scope, pick an *Available* IP, press **Edit** (not **Set status**, that dialog has no MAC or client-name fields).
 3. Status **Reserved**, tick **Send Reservation to DHCP Server**, keep *DHCP only*, server `DC01`, type Static, fill **DHCP Client Name** and **MAC address**, **Save**. In the pop-up use the text button **Create reservation on DHCP Server**, the blue button *in IPAM only* never touches DC01.
 
+![Summary page of the Add DHCP scope wizard for THU-30](screenshots/ipam-add-dhcp-scope-summary.png)
+
 ![Reservation form with "Send Reservation to DHCP Server" ticked](screenshots/ipam-dhcp-reservation-form.png)
 
 ![IPAM confirms: DHCP reservation(s) created successfully](screenshots/ipam-dhcp-reservation-created.png)

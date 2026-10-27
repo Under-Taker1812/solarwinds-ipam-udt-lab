@@ -59,6 +59,8 @@ After a logon on a domain machine (`net use` against DC01 as `LAB\user1`), the *
 
 Search box on the summary page → choose the match type (hostname, IP or MAC; each extra type slows the search; `*` wildcards allowed) → Enter. A single hit opens the endpoint page with switch and port.
 
+[SCREENSHOT 07: the UDT Device Inventory list with MAC, IP and switch-port columns]
+
 ### Finding: the MAC is only on the switch if its frames traverse the switch
 
 Test U-03 searched for client c5's MAC and expected "switch S1, port gi1". The first result listed only `ens33 (Router)` on `gw-bench`.

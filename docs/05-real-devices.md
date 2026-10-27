@@ -63,6 +63,12 @@ Points that are easy to miss:
 
 **Verify:** `commit check` → *configuration check succeeds*; `show security zones` places `ge-0/0/0.20` in `untrust` and `.50` in `trust`; `show route 0.0.0.0/0` → static via `203.0.113.1`.
 
+![F1 interfaces: ge-0/0/0.20 and .50 up with their addresses](screenshots/f1-interfaces.png)
+
+![F1 security zones: .20 in untrust, .50 in trust](screenshots/f1-security-zones.png)
+
+![F1 routing table: default route via 203.0.113.1; the NAT pool addresses appear as static discard routes](screenshots/f1-routes.png)
+
 ## 3. Catalyst 1200 (S1)
 
 ### Reset
@@ -92,6 +98,10 @@ Type [`cisco-c1200.txt`](../configs/cisco-c1200.txt) one command per line (pasti
 
 Connect d2, check `show interfaces terse | match ge-0/0/0` on F1 and `show interfaces status` on S1, then connect d1 and ping from GW-BENCH (`192.168.20.2`, `203.0.113.10`).
 
+[SCREENSHOT 03: the bench: SRX220, Catalyst 1200, USB Ethernet adapter and the two cables]
+
+![S1 interface status: gi1 (d1) and gi2 (d2) up at 1 Gbps full duplex, every other port down](screenshots/s1-interface-status.png)
+
 > **USB adapter flapping.** Once, `gi1` kept toggling `LINK-W-Down` / `LINK-I-Up` and the adapter dropped out of Windows entirely. Moving it to a different USB port fixed it and it stayed stable afterwards, keep the adapter on that port. The root cause was never proven (port, cable, adapter and driver were not isolated one by one).
 
 ## 5. G tests
@@ -113,6 +123,10 @@ Order: G-00 → G-05, then **G-12** (the NAT tests depend on it), then G-06 → 
 | G-09 | c1 `curl` fake Internet; F1 `show security flow session nat`; web log | Session `192.168.50.11 → 203.0.113.10` | ✅ log source `203.0.113.10` |
 | G-10 | `curl` from c3 then c1 | Two different source addresses | ✅ c3 from pool `.11–.13`, c1 from `.10` |
 | G-11 | `nslookup 192.168.10.20 192.168.10.10` | `sw-srv.lab.local` | ✅ |
+
+![F1 NAT session table during G-09/G-10: c1 translated to .10, c3 to a pool address](screenshots/f1-nat-sessions.png)
+
+[SCREENSHOT 04: `snmpwalk` of S1's MAC table (G-06) listing GW-BENCH, F1 and S1 itself]
 
 ### G-12 failed first: the driver strips VLAN tags
 

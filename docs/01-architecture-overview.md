@@ -5,6 +5,11 @@
 A SolarWinds server (IPAM + UDT) and a small Active Directory run as three VMs on a Proxmox node. Everything the SolarWinds server is supposed to *discover* lives somewhere else: two Linux VMs on a laptop (a router and a "client farm") plus two real network devices on a bench (a Juniper SRX220 firewall and a Cisco Catalyst 1200 switch). A Tailscale tunnel joins the two halves, so the SolarWinds server polls the bench devices as if they were on the same LAN. The whole thing has no dependency on the company network beyond one VM that reaches the Internet for Tailscale.
 
 ## Diagram
+## Diagram
+
+![The three places: Proxmox node, laptop with VMware, real devices](diagrams/three-places.svg)
+
+The same system with every link and port label:
 
 ```mermaid
 flowchart LR
@@ -71,6 +76,8 @@ flowchart LR
 | Behind the firewall | `192.168.50.0/24` | 50, tagged | F1 .1 (sub-interface `ge-0/0/0.50`), c1 .11, c2 .12, c3 .131, c4 .132 |
 | Fake Internet | `198.51.100.0/24` | none (VMware host-only VMnet13) | GW-BENCH .1, LAB-LNX .100 |
 | Tailscale | `100.64.0.0/10` | n/a | Assigned automatically; not used as a lab range |
+
+![Path of a client packet through the firewall's NAT to the fake Internet](diagrams/nat-path.svg)
 
 > **Why `203.0.113.0/24` and `198.51.100.0/24`?** They are TEST-NET-3 and TEST-NET-2 ([RFC 5737](https://www.rfc-editor.org/rfc/rfc5737)): reserved for documentation, never routed on the Internet, and *outside* the three RFC 1918 private ranges. That makes IPAM classify them as public, so the Public/Private labelling and NAT scenarios can be tested without touching anyone's real address space. If the lab had used `192.168.x`, `10.x` or `172.16.x` for the "outside", IPAM would always say private.
 

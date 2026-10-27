@@ -8,6 +8,8 @@ Builds the three VMs that live on the Proxmox node. SW-SRV (VMID 450) is created
 | 451 | DC01 | Active Directory, DNS, DHCP for `lab.local` |
 | 452 | GW-SRV | Ubuntu gateway and Tailscale subnet router |
 
+[SCREENSHOT 01: Proxmox web UI showing VMs 450, 451 and 452 running on proxmox-5, node addresses blacked out]
+
 > ⚠️ **lab-only:** `ufw` on GW-SRV was left `inactive` on purpose (the exact rule set is in section 3.8). Turn it on last, from the Proxmox console, so a typo cannot lock you out.
 
 Conventions: `[PVE]` = shell on the Proxmox node, `[GW-SRV]` = Ubuntu VM shell, `[DC01]` = PowerShell on DC01.
@@ -53,6 +55,8 @@ ifreload -a
 ip -br link show vmbr21     # NO-CARRIER or UNKNOWN is normal
 ```
 
+![vmbr21 appended to /etc/network/interfaces and applied with ifreload](screenshots/proxmox-vmbr21-created.png)
+
 **Rollback:** copy the `.bak` file back and `ifreload -a`.
 
 ## 3. GW-SRV (VMID 452)
@@ -94,6 +98,8 @@ qm start 452
 > **Double-tag trap.** On this node the uplink bridge sits on a VLAN sub-interface (`nicX.108`), so the VLAN is already applied. Adding `tag=108` to `net1` makes Proxmox stack a second tag (QinQ), the DHCP server drops the DISCOVER, and `eth1` never gets an address. On trunk-style bridges (VLAN-aware, no sub-interface) the tag *is* required. Check how the bridge is built before copying someone's `qm config`.
 
 **Verify:** `ip -br addr` shows `192.168.10.1/24` on `eth0` and a DHCP address on `eth1`; `ping -c3 1.1.1.1` works.
+
+![GW-SRV addresses: eth0 on the lab bridge, eth1 with a DHCP address (blacked out)](screenshots/gw-srv-addresses.png)
 
 ### 3.2 Keep the uplink subnet on the main routing table
 
@@ -219,6 +225,10 @@ Static IP `192.168.10.10/24`, gateway `192.168.10.1`, DNS `127.0.0.1`, Remote De
    > DC01 sits in `192.168.10.0/24` but the scope serves `192.168.20.0/24`: DHCP picks a scope by the relay address (`giaddr`) in the packet, so the scope only answers requests relayed by GW-BENCH.
 
 5. **Two accounts**: `svc-solarwinds` (never expires, used by SolarWinds) and `user1` (test user that UDT will see logging in).
+
+![DNS Manager on DC01: the A records of the static machines, and nslookup answering for them](screenshots/dc01-dns-records.png)
+
+![Creating the svc-solarwinds account](screenshots/dc01-new-service-account.png)
 
 ### 4.4 Eject the ISOs
 

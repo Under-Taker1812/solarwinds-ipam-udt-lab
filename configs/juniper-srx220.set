@@ -1,4 +1,6 @@
 # F1: Juniper SRX220H2, Junos 12.1X44-D35.5, built from factory defaults.
+# Matches the device's own `show | display set` export taken on 2026-10-16 (the root
+# password hash line is left out).
 # Enter with `configure`, run `delete` first (answer yes) to drop the factory config,
 # then paste or type the lines below and finish with `commit check` and `commit`.
 #

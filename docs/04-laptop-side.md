@@ -24,6 +24,10 @@ Set-NetAdapterAdvancedProperty -Name "Ethernet 2" -RegistryKeyword "*PriorityVLA
 
 Keep **VMware Bridge Protocol** enabled on the adapter. In the Virtual Network Editor add VMnet10 as Bridged and pick the USB adapter explicitly in **Bridged to**, not *Automatic*, not Wi-Fi.
 
+![USB adapter bindings: IPv4 off, VMware Bridge Protocol on](screenshots/usb-adapter-bindings.png)
+
+![Virtual Network Editor: VMnet10 bridged to the USB adapter](screenshots/vmware-virtual-network-editor.png)
+
 | Trap | Symptom → fix |
 |---|---|
 | VMware asks "New USB Device Detected" | Choose **Connect to the host** (and remember). Choosing the VM makes Windows lose the adapter, leaving VMnet10 nothing to bridge. If the prompt keeps returning, move the adapter to another USB port or restart `VMUSBArbService` |
@@ -40,6 +44,8 @@ Ubuntu Server 24.04, 2 vCPU, 2 GB, 10 GB. Three NICs in this order: VMnet10, VMn
 Copy [`configs/gw-bench/60-lab.yaml`](../configs/gw-bench/60-lab.yaml) to `/etc/netplan/60-lab.yaml`, `chmod 600`, then `sudo netplan try` and press Enter before the timer expires.
 
 **Verify:** `ip -br addr` shows two addresses on `ens33` (`192.168.20.1`, `203.0.113.1`), `198.51.100.1` on `ens37`, and a DHCP address on `ens38`.
+
+![GW-BENCH addresses on its three NICs](screenshots/gw-bench-addresses.png)
 
 ### 2.2 Forwarding and SNMP
 
@@ -65,6 +71,8 @@ sudo tailscale up \
 ```
 
 Log in with the **same Tailscale account** as GW-SRV, then approve all three routes in the admin console.
+
+[SCREENSHOT 02: `tailscale status` on GW-BENCH listing lab-gw-srv and the laptop as online]
 
 **Verify:**
 
@@ -109,6 +117,8 @@ sudo tcpdump -ni tailscale0 'udp port 67'                # tunnel side
 
 Finally `Get-DhcpServerv4Lease -ScopeId 192.168.20.0` on DC01 must list the client. On DC01 the *File and Printer Sharing (Echo Request – ICMPv4-In)* firewall rule must be enabled, or the Windows hosts will not answer ping.
 
+![c5 obtains 192.168.20.100 through the relay, then reaches the gateway, DC01 and the fake Internet](screenshots/c5-dhcp-relay-check.png)
+
 ## 3. LAB-LNX
 
 Ubuntu Server 24.04, 2 vCPU, 3 GB, 25 GB. Two roles:
@@ -137,6 +147,8 @@ journalctl -u lab-web -n 5 --no-pager   # shows the source address of each reque
 ```
 
 The access log is the **ground truth** for NAT tests: it records the address the SRX220 actually presented, which is then compared with what SolarWinds claims to see.
+
+![lab-web service active and a request logged with its source address](screenshots/lab-web-service.png)
 
 ### 3.2 The clients
 
@@ -168,5 +180,7 @@ ip netns exec c1 ip route add default via 192.168.50.1
 > Typos that cost time: `mod bridge` instead of `mode bridge` creates an interface named `mv` (remove with `ip link del mv`), and `192.168.5.x` instead of `192.168.50.x`.
 
 **Verify:** `ip -all netns exec ip -br addr` shows the addresses above; `ip netns exec c1 ping -c2 192.168.50.12` works; c5 reports `bound to 192.168.20.1xx`.
+
+![The six namespaces with their addresses, and a ping between two clients](screenshots/lab-clients-namespaces.png)
 
 Next: [Real devices](05-real-devices.md).

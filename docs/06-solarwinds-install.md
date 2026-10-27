@@ -73,6 +73,10 @@ Note the start time: it is day 0 of the trial.
 5. **Configuration Wizard:** accept defaults for Express; website *All Unassigned*; answer **Yes** when asked to disable the Windows SNMP Trap service in favour of SolarWinds' trap service.
 6. Open the web console. In 2026.4 the port is **8787**, not 80. Create the `admin` account on first login.
 
+[SCREENSHOT 05: the SolarWinds Installation Report page]
+
+[SCREENSHOT 06: the web console right after the first login]
+
 Result in this lab: 22 SolarWinds services (20 running, two optional ones stopped), SQL Server Express, IIS site `SolarWinds NetPerfMon` on `*:8787`.
 
 > **Firewall trap.** The installer creates the `SolarWinds NetPerfMon` inbound rule for the *Private* profile only. A domain-joined server uses the *Domain* profile, so the console is reachable from SW-SRV itself but not from anywhere else. Add a rule for the Domain profile, TCP 8787, scoped to `192.168.10.0/24`, `192.168.20.0/24` and the Tailscale range `100.64.0.0/10`.
@@ -89,6 +93,10 @@ Result in this lab: 22 SolarWinds services (20 running, two optional ones stoppe
 | License size | Unlimited |
 | Expires | 2026-11-20 (30 days after the 2026-10-21 install) |
 | Menus added | **My Dashboards → IP Addresses** (IPAM Summary, Manage Subnets & IP Addresses, DHCP & DNS Management, Request IP Address) and **Device Tracker** (Summary, Device Inventory, User Inventory) |
+
+![My Dashboards, IP Addresses: the menu IPAM adds](screenshots/solarwinds-menu-ip-addresses.png)
+
+![My Dashboards, Device Tracker: the menu UDT adds](screenshots/solarwinds-menu-device-tracker.png)
 
 If IPAM or UDT menus are missing: log out and in again; otherwise License Manager → *See all available products* → tick IPAM and UDT → *Try for free* (needs Internet again).
 

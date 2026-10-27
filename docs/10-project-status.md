@@ -38,7 +38,7 @@ None of these block reading the documentation; they are what a successor would p
 | Test scope `THU-30` | Created on DC01 for the write-back test (I-06) and left in place |
 | 62 monitored switch ports | Only `gi1` and `gi2` matter; the rest count toward the license |
 | `lab-clients.service` | Written, never installed; clients must be rebuilt by hand after a LAB-LNX reboot |
-| F1 configuration as text | The `.set` file here is reconstructed from the build steps, not exported from the device |
+| Screenshots 01 to 07 | Marked `[SCREENSHOT NN]` in the docs, listed in [screenshots](screenshots.md); not taken before the lab was shut down |
 | Role *Hide* (I-08) | Not tested |
 | Endpoint page shows `20 (Router)` | Cause unknown (see [UDT](08-udt-configuration.md)) |
 | Red status of F1, GW-BENCH, GW-SRV in SolarWinds | Cause not investigated (F1: the `/junos` volume reading full) |
