@@ -71,6 +71,10 @@ configs/    — device and VM configs: SRX220, Catalyst, netplan, dhcp-helper, c
 
 This is a personal lab, not a production reference. Shortcuts taken on purpose are marked **⚠️ lab-only** in the relevant doc: an over-privileged service account, a disabled host firewall, SNMP v2c community strings.
 
+## Repo activity
+
+![Repobeats analytics image](https://repobeats.axiom.co/api/embed/4cd263143a75900a2e121e828fefed0aaf087817.svg "Repobeats analytics image")
+
 ## License
 
 [MIT](LICENSE) — documentation and code in this repo are free to use, copy, and adapt, with attribution. Provided as-is, no warranty. SolarWinds, Cisco, Juniper, Proxmox and the other product names belong to their owners; this project is not affiliated with or endorsed by them.
